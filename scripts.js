@@ -1,8 +1,6 @@
 /**
- * Single Responsibility Principle: By seperating the creation of elements and fragments 
- * into respective dedicated function.
  * 
- * Created modules and placed functions associated with it. 
+ * Made use of factory functions to create an object that encapsulates the function.
  *    
  */
 
@@ -16,36 +14,39 @@ let page = 1;
 let matches = books
 
 //Creates a list of preview elements and appends them to the document
-const createPreview = () => {
-
+const createPreviewFactory = () => {
     const fragment = document.createDocumentFragment()
 
-    for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
-        const element = document.createElement('button')
-        element.classList = 'preview'
-        element.setAttribute('data-preview', id)
+    const createPreview = () => {
+        for (const { author, id, image, title } of matches.slice(0, BOOKS_PER_PAGE)) {
+            const element = document.createElement('button')
+            element.classList = 'preview'
+            element.setAttribute('data-preview', id)
 
-        element.innerHTML = `
-            <img
-                class="preview__image"
-                src="${image}"
-            />
-            
-            <div class="preview__info">
-                <h3 class="preview__title">${title}</h3>
-                <div class="preview__author">${authors[author]}</div>
-            </div>
-        `
+            element.innerHTML = `
+                <img
+                    class="preview__image"
+                    src="${image}"
+                />
+                
+                <div class="preview__info">
+                    <h3 class="preview__title">${title}</h3>
+                    <div class="preview__author">${authors[author]}</div>
+                </div>
+            `
 
-        fragment.appendChild(element)
-
-        
+            fragment.appendChild(element)
+        }
+            return fragment;
     }
-
-        return fragment;
+    return {
+        createPreview
+    }
 }
 
-document.querySelector('[data-list-items]').appendChild(createPreview()) //call function
+const listPreviewFactory = createPreviewFactory();
+const listPreviewFragment = listPreviewFactory.createPreview();
+document.querySelector('[data-list-items]').appendChild(listPreviewFragment) //call function
 
 const genreHtml = document.createDocumentFragment()
 genreHtml.appendChild(createOptionsElement('any', 'All Genres'))
