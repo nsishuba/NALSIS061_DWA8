@@ -1,14 +1,12 @@
 /**
- * 
  * Made use of factory functions to create an object that encapsulates the function.
- *    
+ * Encapsulation was applied to the createPreview function, createOptionsElement and createOptionsFragment. 
  */
 
 import { books, authors, genres, BOOKS_PER_PAGE } from './modules/data.js';
-import { createOptionsElement, createOptionsFragments } from './modules/createOptions.js';
+import { createOptionsFactory } from './modules/createOptions.js';
 import { setTheme } from './modules/theme.js';
-import { getHtml } from './modules/helpers.js'
-
+// import { getHtml } from './modules/helpers.js'
 
 let page = 1;
 let matches = books
@@ -43,19 +41,21 @@ const createPreviewFactory = () => {
         createPreview
     }
 }
-
+//encapsulation
 const listPreviewFactory = createPreviewFactory();
 const listPreviewFragment = listPreviewFactory.createPreview();
 document.querySelector('[data-list-items]').appendChild(listPreviewFragment) //call function
+//encapsulation
+const optionsFactory = createOptionsFactory();
 
 const genreHtml = document.createDocumentFragment()
-genreHtml.appendChild(createOptionsElement('any', 'All Genres'))
-genreHtml.appendChild(createOptionsFragments(genres)) 
+genreHtml.appendChild(optionsFactory.createOptionsElement('any', 'All Genres'))
+genreHtml.appendChild(optionsFactory.createOptionsFragments(genres)) 
 document.querySelector('[data-search-genres]').appendChild(genreHtml)
 
 const authorsHtml = document.createDocumentFragment()
-authorsHtml.appendChild(createOptionsElement('any', 'All Authors'))
-authorsHtml.appendChild(createOptionsFragments(authors))
+authorsHtml.appendChild(optionsFactory.createOptionsElement('any', 'All Authors'))
+authorsHtml.appendChild(optionsFactory.createOptionsFragments(authors))
 document.querySelector('[data-search-authors]').appendChild(authorsHtml)
 
 //sets initial theme based on settings of the users device.
